@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.Hashtable;
 
 import org.junit.jupiter.api.Test;
 
@@ -11,16 +12,16 @@ class NutritionCalculatorTest {
 	
 	@Test
 	void testCalculate() {
-		HashMap<String, HashMap<String, Double>> ingredientsIntake = new HashMap<String, HashMap<String, Double>>();
+		Hashtable<String, Hashtable<String, Double>> ingredientsIntake = new Hashtable<String, Hashtable<String, Double>>();
 		
-		HashMap<String, Double> ingredientIntake = new HashMap<String, Double>();
+		Hashtable<String, Double> ingredientIntake = new Hashtable<String, Double>();
 		ingredientIntake.put("gramWeight", 50.00);
 		ingredientsIntake.put("1049", ingredientIntake);
 		
 		NutritionCalculator nutritionCalculator = new NutritionCalculator(ingredientsIntake);
 		
-		EnumMap<Nutrient, HashMap<String, Double>> expectedNutrition = new EnumMap<Nutrient, HashMap<String, Double>>(Nutrient.class);
-		HashMap<String, Double> nutritionForZinc = new HashMap<String, Double>();
+		EnumMap<Nutrient, Hashtable<String, Double>> expectedNutrition = new EnumMap<Nutrient, Hashtable<String, Double>>(Nutrient.class);
+		Hashtable<String, Double> nutritionForZinc = new Hashtable<String, Double>();
 		nutritionForZinc.put("gramWeight", 5.00);
 		expectedNutrition.put(Nutrient.ZINC, nutritionForZinc);
 		

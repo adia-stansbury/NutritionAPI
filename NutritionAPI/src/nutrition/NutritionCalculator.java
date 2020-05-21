@@ -7,10 +7,10 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 // Calculates nutrition of ingredients
 public class NutritionCalculator {
-	// { "1049": { "gramWeight": 5 }, "1055: {"gramWeight": 50 }}
 	Hashtable<String, Hashtable<String, Double>> ingredients;
 	
 	NutritionCalculator(Hashtable<String, Hashtable<String, Double>> ingredients) {
@@ -27,14 +27,16 @@ public class NutritionCalculator {
 	}
 
 	private double gramWeight(Nutrient nutrient) {
-		for(Hashtable<String, Hashtable<String, Double>> ingredient : ingredients) {
-			String ingredientID = ingredient.getKey();
-			nutrition(ingredientID, ingredientGramWeight.nutrient);
-			
-		}
+		return ingredients
+				.entrySet()
+				.stream()
+				.mapToDouble(ingredientMapEntry ->
+					nutrientGramWeightInIngredient(ingredientMapEntry.getKey(), ingredientMapEntry.getValue().get("gramWeight"), nutrient)
+				)
+				.sum();
 	}
 	
-	private double nutrition(String ingredientID, double ingredientGramWeight, Nutrient nutrient) {
+	private double nutrientGramWeightInIngredient(String ingredientID, double ingredientGramWeight, Nutrient nutrient) {
 		Ingredient ingredient = new Ingredient(ingredientID);
 		return ingredient.nutrientGramWeight(ingredientGramWeight, nutrient);	
 	}
@@ -43,5 +45,4 @@ public class NutritionCalculator {
 		// TODO Auto-generated method stub
 
 	}
-
 }
