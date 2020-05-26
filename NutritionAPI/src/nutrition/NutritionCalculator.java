@@ -17,11 +17,13 @@ public class NutritionCalculator {
 		this.ingredients = ingredients;
 	}
 	
-	public EnumMap<Nutrient, Hashtable<String, Double>> calculate() {
+	public EnumMap<Nutrient, Hashtable<String, Double>> calculate() throws NullPointerException {
 		EnumMap<Nutrient, Hashtable<String, Double>> nutrition = new EnumMap<Nutrient, Hashtable<String, Double>>(Nutrient.class);
 		Hashtable<String, Double> nutritionForZinc = new Hashtable<String, Double>();
 		nutritionForZinc.put("gramWeight", gramWeight(Nutrient.ZINC));
 		nutrition.put(Nutrient.ZINC, nutritionForZinc);
+		
+		// TODO: return 404 error if missing ingredient 
 		
 		return nutrition;
 	}

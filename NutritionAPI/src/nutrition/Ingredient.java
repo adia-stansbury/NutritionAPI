@@ -10,11 +10,20 @@ public class Ingredient {
 		this.ingredientId = ingredientId;
 	}
 
-	public double nutrientGramWeight(double ingredientGramWeight, Nutrient nutrient) {
-		return Ingredient.ingredients().get(ingredientId).get(nutrient).get("gramWeightPerPortion") * portionCount(ingredientGramWeight);
+	public double nutrientGramWeight(double ingredientGramWeight, Nutrient nutrient) throws NullPointerException {
+		return ingredientData().get(nutrient).get("gramWeightPerPortion") * portionCount(ingredientGramWeight);
 	}
 	
-	public static Hashtable<String, Hashtable<Nutrient, Hashtable<String, Double>>> ingredients() {
+	private Hashtable<Nutrient, Hashtable<String, Double>> ingredientData() throws NullPointerException {
+		try {
+			return Ingredient.ingredients().get(ingredientId);
+		}
+		catch (NullPointerException e) {
+			throw e;
+		}
+	}
+	
+	private static Hashtable<String, Hashtable<Nutrient, Hashtable<String, Double>>> ingredients() {
 		Hashtable<String, Hashtable<Nutrient, Hashtable<String, Double>>> ingredients = new Hashtable<>();
 		Hashtable<Nutrient, Hashtable<String, Double>> nutritionForYogurt = new Hashtable<>();
 		
