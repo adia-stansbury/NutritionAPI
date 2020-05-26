@@ -20,22 +20,8 @@ class NutritionCalculatorTest {
 		
 		NutritionCalculator nutritionCalculator = new NutritionCalculator(ingredientsIntake);
 		
-		EnumMap<Nutrient, Hashtable<String, Double>> expectedNutrition = new EnumMap<Nutrient, Hashtable<String, Double>>(Nutrient.class);
-		Hashtable<String, Double> nutritionForZinc = new Hashtable<String, Double>();
-		nutritionForZinc.put("gramWeight", 0.26);
-		expectedNutrition.put(Nutrient.ZINC, nutritionForZinc);
-		
 		assertEquals(Nutrient.values().length, nutritionCalculator.calculate().size());
 		
-		assertEquals(
-				expectedNutrition.get(Nutrient.ZINC).get("gramWeight"), 
-				nutritionCalculator.calculate().get(Nutrient.ZINC).get("gramWeight")
-		);
-		
+		assertEquals(0.26, nutritionCalculator.calculate().get(Nutrient.ZINC).get("gramWeight"));
 	}
-	
-	@Test
-	void nutrientGramIntake() {
-	}
-
 }
