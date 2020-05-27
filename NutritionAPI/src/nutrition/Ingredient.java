@@ -10,22 +10,29 @@ public class Ingredient {
 		this.ingredientId = ingredientId;
 	}
 
-	public double nutrientGramWeight(double ingredientGramWeight, Nutrient nutrient) throws NullPointerException {
-		return ingredientData().get(nutrient).get("gramWeightPerPortion") * portionCount(ingredientGramWeight);
+	public double nutrientGramWeight(double ingredientGramWeight, Nutrient nutrient) {
+		return (double) ingredientData().get("nutrition").get(nutrient).get("gramWeightPerPortion") * portionCount(ingredientGramWeight);
 	}
 	
-	private Hashtable<Nutrient, Hashtable<String, Double>> ingredientData() throws NullPointerException {
+	private Hashtable<String, Hashtable<Nutrient, Hashtable<String, Object>>> ingredientData() {
 		try {
 			return Ingredient.ingredients().get(ingredientId);
 		}
 		catch (NullPointerException e) {
-			throw e;
+			return defaultIngredientData();
 		}
 	}
 	
-	private static Hashtable<String, Hashtable<Nutrient, Hashtable<String, Double>>> ingredients() {
-		Hashtable<String, Hashtable<Nutrient, Hashtable<String, Double>>> ingredients = new Hashtable<>();
-		Hashtable<Nutrient, Hashtable<String, Double>> nutritionForYogurt = new Hashtable<>();
+	private Hashtable<String, Hashtable<Nutrient, Hashtable<String, Object>>> defaultIngredientData() {
+		Hashtable<String, Hashtable<Nutrient, Hashtable<String, Object>>> defaultIngredientData = new Hashtable<>();
+		// create hash with nutrients as keys with value of { "gramWeightPerPortion": 0 } Nutrient.values()
+		// { zinc: { gramWeightPerPortion: 0, dataError: "missing nutrient data" }}
+		return defaultIngredientData;
+	}
+	
+	private static Hashtable<String, Hashtable<String, Hashtable<Nutrient, Hashtable<String, Object>>>> ingredients() {
+		Hashtable<String, Hashtable<String, Hashtable<Nutrient, Hashtable<String, Object>>>> ingredients = new Hashtable<>();
+		Hashtable<Nutrient, Hashtable<String, Object>> nutritionForYogurt = new Hashtable<>();
 		
 		nutritionForYogurt.put(Nutrient.ZINC, nutrientDetails(0.52));
 //		nutritionForYogurt.put(Nutrient.IRON, nutrientDetails(0));
@@ -49,16 +56,20 @@ public class Ingredient {
 //		nutritionForYogurt.put(Nutrient.VITAMIN_E, nutrientDetails(0.01));
 //		nutritionForYogurt.put(Nutrient.VITAMIN_K, nutrientDetails(0.0));
 		
-		ingredients.put("1049", nutritionForYogurt);
+		Hashtable<String, Hashtable<Nutrient, Hashtable<String, Object>>> nutrition = new Hashtable<>();
+		nutrition.put("nutrition", nutritionForYogurt);
+		
+		ingredients.put("1049", nutrition);
 		
 		return ingredients;
 	}
 	
-    private static Hashtable<String, Double> nutrientDetails(double gramWeight) {
+    private static Hashtable<String, Object> nutrientDetails(double gramWeight) {
         // amount per 100g is in same unit as enum Nutrient unit TODO: change to grams
-        Hashtable<String, Double> details = new Hashtable<>();
+        Hashtable<String, Object> details = new Hashtable<>();
         
         details.put("gramWeightPerPortion", gramWeight);
+        details.put("errors", null);
         
         return details;
     }
