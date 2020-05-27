@@ -1,5 +1,6 @@
 package nutrition;
 
+import java.util.EnumMap;
 import java.util.Hashtable;
 
 public class Ingredient {
@@ -11,10 +12,14 @@ public class Ingredient {
 	}
 
 	public double nutrientGramWeight(double ingredientGramWeight, Nutrient nutrient) {
-		return (double) ingredientData().get("nutrition").get(nutrient).get("gramWeightPerPortion") * portionCount(ingredientGramWeight);
+		return nutrientGramWeightPerPortion(nutrient) * portionCount(ingredientGramWeight);
 	}
 	
-	private Hashtable<String, Hashtable<Nutrient, Hashtable<String, Object>>> ingredientData() {
+	private double nutrientGramWeightPerPortion(Nutrient nutrient) {
+		return ingredientNutrition().get(nutrient).get("gramWeightPerPortion")
+	}
+	
+	private ingredientData() {
 		try {
 			return Ingredient.ingredients().get(ingredientId);
 		}
@@ -23,10 +28,12 @@ public class Ingredient {
 		}
 	}
 	
-	private Hashtable<String, Hashtable<Nutrient, Hashtable<String, Object>>> defaultIngredientData() {
+	private Hashtable<String, EnumMap<Nutrient, Hashtable<String, Object>>> defaultIngredientData() {
 		Hashtable<String, Hashtable<Nutrient, Hashtable<String, Object>>> defaultIngredientData = new Hashtable<>();
 		// create hash with nutrients as keys with value of { "gramWeightPerPortion": 0 } Nutrient.values()
 		// { zinc: { gramWeightPerPortion: 0, dataError: "missing nutrient data" }}
+		Hashtable<Nutrient, Hashtable<String, Object>> nutrition = new Hashtable<>();
+		defaultIngredientData.put("nutrition", nutrition);
 		return defaultIngredientData;
 	}
 	

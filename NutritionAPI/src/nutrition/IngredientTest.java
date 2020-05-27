@@ -8,17 +8,17 @@ class IngredientTest {
 	// TODO: stub ingredients and constant
 
 	@Test
-	void testNutrientGramWeight_haveIngredientData_shouldReturnNutrientGramWeight() {
+	void testNutrientGramWeight_haveIngredientNutrition() {
 		Ingredient ingredient = new Ingredient("1049");
 		
 		assertEquals(0.26, ingredient.nutrientGramWeight(50.00, Nutrient.ZINC));
 	}
 	
 	@Test
-	void testNutrientGramWeight_missingIngredientData_shouldReturnError() {
+	void testNutrientGramWeight_missingIngredientNutrition() {
 		String ingredientID = "1";
 		Ingredient ingredient = new Ingredient(ingredientID);
 		
-		assertThrows(NullPointerException.class, () -> ingredient.nutrientGramWeight(50.00, Nutrient.ZINC));
+		assertEquals(0.00, ingredient.nutrientGramWeight(50.00, Nutrient.ZINC));
 	}
 }

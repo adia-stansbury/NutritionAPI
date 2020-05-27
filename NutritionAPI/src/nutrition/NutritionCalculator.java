@@ -17,13 +17,11 @@ public class NutritionCalculator {
 		this.ingredients = ingredients;
 	}
 	
-	public EnumMap<Nutrient, Hashtable<String, Double>> calculate() throws NullPointerException {
+	public EnumMap<Nutrient, Hashtable<String, Double>> calculate() {
 		EnumMap<Nutrient, Hashtable<String, Double>> nutrition = new EnumMap<Nutrient, Hashtable<String, Double>>(Nutrient.class);
 		Hashtable<String, Double> nutritionForZinc = new Hashtable<String, Double>();
 		nutritionForZinc.put("gramWeight", gramWeight(Nutrient.ZINC));
 		nutrition.put(Nutrient.ZINC, nutritionForZinc);
-		
-		// TODO: return 404 error if missing ingredient 
 		
 		return nutrition;
 	}
@@ -40,7 +38,9 @@ public class NutritionCalculator {
 	
 	private double nutrientGramWeightInIngredient(String ingredientID, double ingredientGramWeight, Nutrient nutrient) {
 		Ingredient ingredient = new Ingredient(ingredientID);
-		return ingredient.nutrientGramWeight(ingredientGramWeight, nutrient);	
+		return ingredient.nutrientGramWeight(ingredientGramWeight, nutrient); // TODO: handle missing ing nutrition, return null and errors
+		// return { nutrientGramWeight: null, error: "Missing ingredient with id <id>" } or { nutrientGramWeight: 1, error: null }
+		// error handling logic belongs in ingredient
 	}
 	
 	public static void main(String[] args) {
